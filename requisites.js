@@ -5,6 +5,29 @@ var request = require('request')
 
 var SUPPORTED_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
 
+function attachAssertions(response) {
+  response.should = {
+    haveCode: function(code) {
+      assert.equal(response.statusCode, code);
+    }
+  , succeed: function() {
+      response.should.haveCode(200);
+    }
+  , fail: function() {
+      assert(response.statusCode >= 400);
+    }
+  , beMissing: function() {
+      response.should.haveCode(404);
+    }
+  , redirectTo: function(url, code) {
+      if (typeof code === 'undefined') code = 302;
+      assert.equal(response.headers.location, baseURL + url);
+      response.should.haveCode(code);
+    }
+  };
+  return response;
+}
+
 module.exports = {
   setBaseURL: function(url) {
     baseURL = url;
@@ -26,25 +49,8 @@ module.exports = {
     if (method === 'GET') params.qs = data;
     else params.body = data;
     request(params, function(req, res) {
-      if (callback) callback(res);
+      if (callback) callback(attachAssertions(res));
     });
-  }
-, hasCode: function(response, code) {
-    assert.equal(response.statusCode, code);
-  }
-, succeeded: function(response) {
-    module.exports.hasCode(response, 200);
-  }
-, failed: function(response) {
-    assert(response.statusCode >= 400);
-  }
-, notFound: function(response) {
-    module.exports.hasCode(response, 404);
-  }
-, redirected: function(response, url, code) {
-    if (typeof code === 'undefined') code = 302;
-    module.exports.hasCode(response, code);
-    assert.equal(response.headers.location, baseURL + url);
   }
 };
 

@@ -3,36 +3,36 @@ var r = require('../requisites'),
 
 r.get('https://github.com', function(res) {
   assert.doesNotThrow(function() {
-    r.succeeded(res);
+    res.should.succeed();
   });
   assert.throws(function() {
-    r.failed(res);
+    res.should.fail();
   });
 });
 
 r.get('http://github.com', function(res) {
   assert.doesNotThrow(function() {
-    r.redirected(res, 'https://github.com/', 301);
+    res.should.redirectTo('https://github.com/', 301);
   });
   assert.throws(function() {
-    r.succeeded(res);
+    res.should.succeed();
   });
   assert.throws(function() {
-    r.failed(res);
+    res.should.fail();
   });
 });
 
 r.get('https://github.com/kristjan/requisites/nonsense', function(res) {
   assert.doesNotThrow(function() {
-    r.notFound(res);
+    res.should.beMissing();
   });
   assert.doesNotThrow(function() {
-    r.failed(res);
+    res.should.fail();
   });
   assert.throws(function() {
-    r.succeeded(res);
+    res.should.succeed();
   });
   assert.throws(function() {
-    r.redirected(res, 'https://github.com');
+    res.should.redirectTo('https://github.com/');
   });
 });

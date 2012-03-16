@@ -2,7 +2,7 @@
    "name":"requisites",
    "description":
      "Framework-agnostic test helpers and assertions for web requests",
-   "version":"0.0.1",
+   "version":"0.0.2",
    "homepage":"http://github.com/kristjan/requisites",
    "repository":"git://github.com/kristjan/requisites.git",
    "author":"Kristán Pétursson <kristjan@gmail.com>",

@@ -18,12 +18,12 @@ Framework-agnostic test helpers and assertions for web requests
 
 Assert success (HTTP 200)
 
-    r.succeeded(res);
+    response.should.succeed();
 
 Assert failure (HTTP 500)
 
-    r.failed(res);
+    response.should.fail();
 
 Assert redirections (HTTP 3XX; default 302)
 
-    r.redirected(res, url[, code]);
+    response.should.redirectTo(url[, httpCode]);
