@@ -1,7 +1,7 @@
 {
    "name":"requisites",
    "description": "Web request helpers and extensions to should.js",
-   "version":"0.0.3",
+   "version":"0.0.4",
    "homepage":"http://github.com/kristjan/requisites",
    "repository":"git://github.com/kristjan/requisites.git",
    "author":"Kristán Pétursson <kristjan@gmail.com>",
