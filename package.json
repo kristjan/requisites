@@ -5,7 +5,7 @@
    "homepage":"http://github.com/kristjan/requisites",
    "repository":"git://github.com/kristjan/requisites.git",
    "author":"Kristán Pétursson <kristjan@gmail.com>",
-   "main":"./requisites.js",
+   "main":"./index.js",
 
    "dependencies":{
       "request":"",

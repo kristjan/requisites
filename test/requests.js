@@ -1,4 +1,4 @@
-var r = require('../requisites'),
+var r = require('../'),
     assert = require('assert');
 
 r.setBaseURL('http://www.google.com');
