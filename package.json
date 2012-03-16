@@ -1,8 +1,7 @@
 {
    "name":"requisites",
-   "description":
-     "Framework-agnostic test helpers and assertions for web requests",
-   "version":"0.0.2",
+   "description": "Web request helpers and extensions to should.js",
+   "version":"0.0.3",
    "homepage":"http://github.com/kristjan/requisites",
    "repository":"git://github.com/kristjan/requisites.git",
    "author":"Kristán Pétursson <kristjan@gmail.com>",
@@ -10,7 +9,7 @@
 
    "dependencies":{
       "request":"",
-      "assert":""
+      "should":""
    },
    "engines":{
       "node":">= 0.6.0"

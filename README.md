@@ -1,6 +1,6 @@
 ## Requisites
 
-Framework-agnostic test helpers and assertions for web requests
+Web request helpers and extensions to should.js
 
 ## Usage
 
@@ -20,10 +20,11 @@ Assert success (HTTP 200)
 
     response.should.succeed();
 
-Assert failure (HTTP 500)
+Assert redirections (HTTP 3XX)
+
+    response.should.redirect([httpCode]);
+    response.should.redirectTo(url[, httpCode]);
+
+Assert failure (HTTP >= 400)
 
     response.should.fail();
-
-Assert redirections (HTTP 3XX; default 302)
-
-    response.should.redirectTo(url[, httpCode]);

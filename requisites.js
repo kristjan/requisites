@@ -1,32 +1,81 @@
 var request = require('request')
-  , assert = require('assert')
+  , Assertion = require('should').Assertion
   , baseURL = ''
   ;
 
 var SUPPORTED_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
 
-function attachAssertions(response) {
-  response.should = {
-    haveCode: function(code) {
-      assert.equal(response.statusCode, code);
-    }
-  , succeed: function() {
-      response.should.haveCode(200);
-    }
-  , fail: function() {
-      assert(response.statusCode >= 400);
-    }
-  , beMissing: function() {
-      response.should.haveCode(404);
-    }
-  , redirectTo: function(url, code) {
-      if (typeof code === 'undefined') code = 302;
-      assert.equal(response.headers.location, baseURL + url);
-      response.should.haveCode(code);
-    }
-  };
-  return response;
-}
+Assertion.prototype.succeed = function() {
+  var res = this.obj;
+  res.should.have.property('statusCode');
+  code = res.statusCode;
+
+  this.assert(
+    code === 200,
+    'expected ' + res.request.uri.href + ' to succeed, but was ' + code,
+    'expected ' + res.request.uri.href + ' to not succeed'
+  );
+  return this;
+};
+
+Assertion.prototype.fail = function() {
+  var res = this.obj;
+  res.should.have.property('statusCode');
+  code = res.statusCode;
+
+  this.assert(
+    this.obj.statusCode >= 400,
+    'expected ' + res.request.uri.href + ' to fail, but was ' + code,
+    'expected ' + res.request.uri.href + ' to not fail'
+  );
+  return this;
+};
+
+Assertion.prototype.missing = function() {
+  var res = this.obj;
+  res.should.have.property('statusCode');
+  code = res.statusCode;
+
+  this.assert(
+    code === 404,
+    'expected ' + res.request.uri.href + ' to be missing, but was ' + code,
+    'expected ' + res.request.uri.href + ' to not be missing'
+  );
+};
+
+Assertion.prototype.redirect = function(expectedCode) {
+  var res = this.obj;
+  res.should.have.property('statusCode');
+  code = res.statusCode;
+
+  if (expectedCode) {
+    this.assert(
+      code === expectedCode,
+      'expected ' + res.request.uri.href + ' to redirect with ' + expectedCode + ', but was ' + code,
+      'expected ' + res.request.uri.href + ' to not redirect with ' + expectedCode
+    );
+  } else {
+    this.assert(
+      code >= 300 && code < 400,
+      'expected ' + res.request.uri.href + ' to redirect, but was ' + code,
+      'expected ' + res.request.uri.href + ' to not redirect'
+    );
+  }
+};
+
+Assertion.prototype.redirectTo = function(url, code) {
+  var res = this.obj;
+  res.should.have.property('headers');
+  redirectUrl = res.headers.location;
+
+  res.should.redirect(code);
+
+  this.assert(
+    redirectUrl === url,
+    'expected ' + res.request.uri.href + ' to redirect to ' + url + ', but redirected to ' + redirectUrl,
+    'expected ' + res.request.uri.href + ' to not redirect to ' + url
+  );
+};
 
 module.exports = {
   setBaseURL: function(url) {
@@ -41,15 +90,18 @@ module.exports = {
       callback = data;
       data = undefined;
     }
+
     var params = {
       method: method
     , url: baseURL + (url || '')
     , followRedirect: false
     };
+
     if (method === 'GET') params.qs = data;
     else params.body = data;
+
     request(params, function(req, res) {
-      if (callback) callback(attachAssertions(res));
+      if (typeof callback === 'function') callback(res);
     });
   }
 };
