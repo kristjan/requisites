@@ -1,0 +1,24 @@
+{
+   "name":"requisites",
+   "description":
+     "Framework-agnostic test helpers and assertions for web requests",
+   "version":"0.0.1",
+   "homepage":"http://github.com/kristjan/requisites",
+   "repository":"git://github.com/kristjan/requisites.git",
+   "author":"Kristán Pétursson <kristjan@gmail.com>",
+   "main":"./requisites.js",
+
+   "dependencies":{
+      "request":"",
+      "assert":""
+   },
+   "engines":{
+      "node":">= 0.6.0"
+   },
+   "licenses":[
+      {
+         "type":"MIT",
+         "url":"http://github.com/kristjan/requisites/raw/master/LICENSE"
+      }
+   ]
+}
